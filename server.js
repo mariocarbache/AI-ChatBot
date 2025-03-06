@@ -3,6 +3,17 @@ const bodyParser = require('body-parser');
 const Trie = require('./chatbot/trie');
 const phrases = require('./chatbot/phrases');
 
+function generateReply(message) {
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
+      return "Hello! How can I help you today?";
+    }
+    if (lowerMessage.includes("bye")) {
+      return "Goodbye! Have a great day!";
+    }
+    return "I don't understand that.";
+  }
+
 const app = express();
 const port = 3000;
 
@@ -17,11 +28,8 @@ app.post('/chat', (req, res) => {
     if (!message) {
         return res.status(400).json({ reply: "No message provided." });
     }
-    if (trie.search(message.toLowerCase())) {
-      res.json({ reply: `You said: "${message}". How can I help?` });
-    } else {
-      res.json({ reply: "I don't understand that." });
-    }
+    const reply = generateReply(message);
+    res.json({ reply });
   });
   
   app.get('/', (req, res) => {
