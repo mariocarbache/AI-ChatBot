@@ -1,22 +1,35 @@
 async function sendMessage() {
     const message = document.getElementById("message").value;
-    if (!message) return alert("Please type something!"); // Alert for empty messages
-  
-    const response = await fetch("http://localhost:3000/chat", { // API request
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
-  
-    const data = await response.json();
     const chat = document.getElementById("chat");
-    chat.innerHTML += `<p>You: ${message}</p>`; // User message display
-    chat.innerHTML += `<p>Bot: ${data.reply}</p>`; // Bot reply display
+
+    if (!message) return alert("Please type something!");
+
+    chat.innerHTML += `<p>You: ${message}</p>`; // Display user message
     document.getElementById("message").value = ""; // Clear input field
-    chat.scrollTop = chat.scrollHeight; // Automatically scrolls to the latest message
+
+    const typingIndicator = document.createElement("p"); // Create new element
+    typingIndicator.textContent = "Bot is typing...";
+    typingIndicator.id = "typing-indicator";
+    chat.appendChild(typingIndicator); // Add it at the bottom
+    chat.scrollTop = chat.scrollHeight; // Auto-scroll
+
+    // Simulate bot typing delay
+    await new Promise(resolve => setTimeout(resolve, 1200));
+
+    const response = await fetch("http://localhost:3000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+    });
+
+    const data = await response.json();
+
+    typingIndicator.remove(); // Remove the typing message
+    chat.innerHTML += `<p>Bot: ${data.reply}</p>`; // Display bot reply
+    chat.scrollTop = chat.scrollHeight; 
   }
 
   function clearChat() {
     const chat = document.getElementById("chat");
-    chat.innerHTML = ""; // Clears all messages
+    chat.innerHTML = "";
   }
