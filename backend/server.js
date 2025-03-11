@@ -5,13 +5,24 @@ const phrases = require('./chatbot/phrases');
 
 function generateReply(message) {
     const lowerMessage = message.toLowerCase();
+    
     if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
       return "Hello! How can I help you today?";
-    }
-    if (lowerMessage.includes("bye")) {
+  }
+
+  if (lowerMessage.includes("help") || lowerMessage.includes("support")) {
+      return "Sure! What do you need help with?";
+  }
+
+  if (lowerMessage.includes("thank") || lowerMessage.includes("thanks")) {
+      return "You're welcome! 😊";
+  }
+
+  if (lowerMessage.includes("bye") || lowerMessage.includes("goodbye")) {
       return "Goodbye! Have a great day!";
-    }
-    return "I don't understand that.";
+  }
+
+  return "I'm not sure how to respond to that. Can you try rephrasing?";
   }
 
 const app = express();
