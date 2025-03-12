@@ -38,6 +38,25 @@ body {
     font-size: 14px;
 }
 
+.user-message {
+    text-align: right;
+    background-color: #007bff;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 5px 0;
+}
+
+.bot-message {
+    text-align: left;
+    background-color: #f1f1f1;
+    padding: 8px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 5px 0;
+}
+
 button {
     margin-top: 5px;
     padding: 10px;
