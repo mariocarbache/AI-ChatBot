@@ -61,7 +61,13 @@ async function sendMessage() {
     chat.scrollTop = chat.scrollHeight; //Auto-scroll
 }
 
-function clearChat() {
-    const chat = document.getElementById("chat");
-    chat.innerHTML = "";
+async function clearChat() {
+    if (!confirm("Are you sure you want to clear the chat history?")) return;
+
+    try {
+        await fetch("http://localhost:3000/clear-history", { method: "DELETE" });
+        document.getElementById("chat").innerHTML = ""; // Clear frontend chat window
+    } catch (error) {
+        console.error("Error clearing chat history:", error);
+    }
 }

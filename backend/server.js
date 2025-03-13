@@ -66,9 +66,16 @@ app.get('/', (req, res) => {
   res.send('Welcome to the AI Chatbot!');
 });
 
-mongoose.connect("mongodb://localhost:27017/chatbot", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log("Connected to MongoDB"))
+app.delete('/clear-history', async (req, res) => {
+  try {
+      await Chat.deleteMany({});
+      res.json({ message: "Chat history cleared successfully!" });
+  } catch (err) {
+      console.error("Error clearing chat history:", err);
+      res.status(500).json({ error: "Failed to clear chat history." });
+  }
+});
+
+mongoose.connect("mongodb://localhost:27017/ai-chatbot").then(() => console.log("Connected to MongoDB"))
 .catch(err => console.error("MongoDB connection error:", err));
 app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
