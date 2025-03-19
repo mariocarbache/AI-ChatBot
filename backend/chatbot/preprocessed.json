@@ -1,0 +1,102 @@
+{
+  "words": [
+    "appreciate",
+    "bye",
+    "farewell",
+    "good",
+    "goodbye",
+    "hello",
+    "hey",
+    "hi",
+    "see",
+    "thank",
+    "thanks",
+    "what"
+  ],
+  "classes": [
+    "goodbye",
+    "greeting",
+    "thanks"
+  ],
+  "documents": [
+    {
+      "words": [
+        "hello"
+      ],
+      "tag": "greeting"
+    },
+    {
+      "words": [
+        "hi"
+      ],
+      "tag": "greeting"
+    },
+    {
+      "words": [
+        "hey"
+      ],
+      "tag": "greeting"
+    },
+    {
+      "words": [
+        "good",
+        "morning"
+      ],
+      "tag": "greeting"
+    },
+    {
+      "words": [
+        "what",
+        "s",
+        "up"
+      ],
+      "tag": "greeting"
+    },
+    {
+      "words": [
+        "bye"
+      ],
+      "tag": "goodbye"
+    },
+    {
+      "words": [
+        "goodbye"
+      ],
+      "tag": "goodbye"
+    },
+    {
+      "words": [
+        "see",
+        "you",
+        "later"
+      ],
+      "tag": "goodbye"
+    },
+    {
+      "words": [
+        "farewell"
+      ],
+      "tag": "goodbye"
+    },
+    {
+      "words": [
+        "thanks"
+      ],
+      "tag": "thanks"
+    },
+    {
+      "words": [
+        "thank",
+        "you"
+      ],
+      "tag": "thanks"
+    },
+    {
+      "words": [
+        "appreciate",
+        "it"
+      ],
+      "tag": "thanks"
+    }
+  ]
+}
