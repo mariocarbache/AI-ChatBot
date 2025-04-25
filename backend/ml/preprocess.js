@@ -31,7 +31,7 @@ const preprocessedData = {
     documents: documents
 };
 
-fs.writeFileSync('./backend/chatbot/preprocessed.json', JSON.stringify(preprocessedData, null, 2));
+fs.writeFileSync('./backend/ml/preprocessed.json', JSON.stringify(preprocessedData, null, 2));
 
 console.log("Preprocessing complete. Data saved to preprocessed.json");
 

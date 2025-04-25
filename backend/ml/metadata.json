@@ -1,0 +1,21 @@
+{
+  "words": [
+    "appreciate",
+    "bye",
+    "farewell",
+    "good",
+    "goodbye",
+    "hello",
+    "hey",
+    "hi",
+    "see",
+    "thank",
+    "thanks",
+    "what"
+  ],
+  "classes": [
+    "goodbye",
+    "greeting",
+    "thanks"
+  ]
+}
