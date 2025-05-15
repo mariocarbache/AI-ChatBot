@@ -1,29 +1,9 @@
 const express = require('express');
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
-const Trie = require('./chatbot/trie');
-const phrases = require('./chatbot/phrases');
 const Chat = require("./models/chat");
-
-
-function generateReply(message, trie) {
-  const lowerMessage = message.toLowerCase();
-
-  for (let category in phrases) {
-    if (category !== "default") {
-      for (let keyword of phrases[category].keywords) {
-        if (trie.search(keyword) && lowerMessage.includes(keyword)) {
-          const responses = phrases[category].responses;
-          return responses[Math.floor(Math.random() * responses.length)]; // Random response
-        }
-      }
-    }
-  }
-
-  // If no match is found, return a default response
-  const defaultResponses = phrases.default.responses;
-  return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-}
+const dataset = require('./ml/dataset.json');
+const predictIntent = require('./ml/predict.js');
 
 const app = express();
 const port = 3000;
@@ -31,20 +11,26 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(require('cors')());
 
-const trie = new Trie();
-Object.values(phrases).forEach(category => {
-  if (category.keywords) { 
-      category.keywords.forEach(keyword => trie.insert(keyword));
-  }
-});
-
 app.post('/chat', async (req, res) => {
   const { message } = req.body;
   if (!message) return res.status(400).json({ reply: "No message provided." });
 
-  const reply = generateReply(message, trie);
+  let intent;
+  try {
+    intent = await predictIntent(message);
+  } catch (err) {
+    console.error("Intent prediction failed:", err);
+    return res.status(500).json({ reply: "Internal error predicting intent." });
+  }
 
-  // Save to MongoDB
+  const intentData = dataset.intents.find((item) => item.tag === intent);
+  let reply;
+  if (intentData && intentData.responses.length > 0) {
+    reply = intentData.responses[Math.floor(Math.random() * intentData.responses.length)];
+  } else {
+    reply = "Sorry, I don't understand that.";
+  }
+
   try {
     await Chat.create({ userMessage: message, botReply: reply });
   } catch (err) {
@@ -56,7 +42,7 @@ app.post('/chat', async (req, res) => {
 
 app.get('/history', async (req, res) => {
   try {
-    const chats = await Chat.find().sort({ createdAt: -1 }).limit(10); // Get last 10 messages
+    const chats = await Chat.find().sort({ createdAt: -1 }).limit(10);
     res.json(chats);
   } catch (err) {
     console.error("Error retrieving chat history:", err);
@@ -78,6 +64,8 @@ app.delete('/clear-history', async (req, res) => {
   }
 });
 
-mongoose.connect("mongodb://localhost:27017/ai-chatbot").then(() => console.log("Connected to MongoDB"))
+mongoose.connect("mongodb://localhost:27017/ai-chatbot")
+  .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error("MongoDB connection error:", err));
+
 app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
